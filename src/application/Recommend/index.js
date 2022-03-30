@@ -1,6 +1,8 @@
 import React from 'react'
 import Slider from '../../components/slider'
 import RecommendList from '../../components/list'
+import { Content } from './style'
+import Scroll from '../../baseUI/scroll/index'
 
 function Recommend(props) {
 
@@ -21,10 +23,15 @@ function Recommend(props) {
     })
 
     return (
-        <div>
-            <Slider bannerList={bannerList}></Slider>
-            <RecommendList recommendList={recommendList}></RecommendList>
-        </div>
+        // 这里Content是为了让better-scroll能够再固定高度的外部容器内实现滚动效果，这是基于bs的实现原理
+        <Content>
+            <Scroll className="list">
+                <div>
+                    <Slider bannerList={bannerList}></Slider>
+                    <RecommendList recommendList={recommendList}></RecommendList>
+                </div>
+            </Scroll>
+        </Content>
     )
 }
 
