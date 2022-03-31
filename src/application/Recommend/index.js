@@ -3,9 +3,11 @@ import Slider from '../../components/slider'
 import RecommendList from '../../components/list'
 import { Content } from './style'
 import Scroll from '../../baseUI/scroll/index'
+import Loading from '../../baseUI/loading/index'
 import { connect } from 'react-redux'
 import * as actionTypes from './store/actionCreators'
 import { useEffect } from 'react'
+import { forceCheck } from 'react-lazyload'
 
 function Recommend(props) {
 
@@ -26,14 +28,22 @@ function Recommend(props) {
     // })
 
     // 实际请求
-    const { bannerList, recommendList } = props
+    const { bannerList, recommendList, enterLoading } = props
 
     const { getBannerDataDispatch, getRecommendListDataDispatch } = props
 
     useEffect(() => {
-        getBannerDataDispatch()
-        getRecommendListDataDispatch()
-    }, [])
+        // 如果页面有数据，则不发送请求
+        // immutable数据结构长度属性为size
+        if(!bannerList.size) {
+            getBannerDataDispatch()
+        }
+    }, [bannerList.size])
+    useEffect(() => {
+        if(!recommendList.size) {
+            getRecommendListDataDispatch()
+        }
+    }, [recommendList.size])
 
     const bannerListJS = bannerList ? bannerList.toJS() : []
     const recommendListJS = recommendList ? recommendList.toJS() : []
@@ -41,12 +51,13 @@ function Recommend(props) {
     return (
         // 这里Content是为了让better-scroll能够再固定高度的外部容器内实现滚动效果，这是基于bs的实现原理
         <Content>
-            <Scroll className="list">
+            <Scroll className="list" onScroll={forceCheck}>
                 <div>
                     <Slider bannerList={bannerListJS}></Slider>
                     <RecommendList recommendList={recommendListJS}></RecommendList>
                 </div>
             </Scroll>
+            { enterLoading ? <Loading></Loading> : null }
         </Content>
     )
 }
@@ -56,7 +67,8 @@ const mapStateToProps = (state) => ({
     // 不要在这里将数据toJS
     // 不然每次diff比对props的时候都是不一样的引用，还是导致不必要的渲染，属于滥用immutable
     bannerList: state.getIn(['recommend', 'bannerList']),
-    recommendList: state.getIn(['recommend', 'recommendList'])
+    recommendList: state.getIn(['recommend', 'recommendList']),
+    enterLoading: state.getIn(['recommend', 'enterLoading'])
 })
 
 // 映射dispatch到props上
