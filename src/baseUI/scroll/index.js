@@ -2,13 +2,34 @@ import React, { useRef, useState, forwardRef, useEffect } from "react";
 import PropTypes from 'prop-types'
 import BScroll from 'better-scroll'
 import styled from 'styled-components'
-import { useImperativeHandle } from "react";
+import { useImperativeHandle } from "react"; 
+import Loading from '../loading'
+import LoadingV2 from '../loading-v2'
 
 const ScrollContainer = styled.div`
     width: 100%;
     height:100%;
     overflow:hidden;
 ` 
+
+const PullUpLoading = styled.div`
+    position: absolute;
+    left:0; right:0;
+    bottom: 5px;
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    z-index: 100;
+`;
+
+export const PullDownLoading = styled.div`
+    position: absolute;
+    left:0; right:0;
+    top: 0px;
+    height: 30px;
+    margin: auto;
+    z-index: 100;
+`;
 
 const Scroll = forwardRef((props, ref) => { // 这个组件能够将其接受的 ref 属性转发到其组件树下的另一个组件中
     // better-scroll实例对象
@@ -18,6 +39,9 @@ const Scroll = forwardRef((props, ref) => { // 这个组件能够将其接受的
 
     const { direction, click, refresh, pullUpLoading, pullDownLoading, bounceTop, bounceBottom } = props;
     const { pullUp, pullDown, onScroll } = props;
+
+    const PullUpDisplayStyle = pullUpLoading ? { display: ''}: {display: 'none'}
+    const PullDownDisplayStyle = pullDownLoading ? { display: ''}: {display: 'none'}
 
     // 创建BS实例
     useEffect(() => {
@@ -81,7 +105,7 @@ const Scroll = forwardRef((props, ref) => { // 这个组件能够将其接受的
         }
     }, [pullDown, bScroll])
 
-    useImperativeHandle(ref, () => ({
+    useImperativeHandle(ref, () => ({ // useImperativeHandle 可以让你在使用 ref 时自定义暴露给父组件的实例值, 这样就可以在父组件中调用scrollContainerRef.current.refresh
         refresh() {
             if(bScroll) {
                 bScroll.refresh()
@@ -99,6 +123,8 @@ const Scroll = forwardRef((props, ref) => { // 这个组件能够将其接受的
     return (
         <ScrollContainer ref={scrollContainerRef}>
             {props.children}
+            <PullUpLoading style={PullUpDisplayStyle}><Loading></Loading></PullUpLoading>
+            <PullDownLoading style={PullDownDisplayStyle}><LoadingV2></LoadingV2></PullDownLoading>
         </ScrollContainer>
     )
 
