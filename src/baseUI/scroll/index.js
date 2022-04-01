@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { useImperativeHandle } from "react"; 
 import Loading from '../loading'
 import LoadingV2 from '../loading-v2'
+import { debounce } from "../../api/utils";
+import { useMemo } from "react";
 
 const ScrollContainer = styled.div`
     width: 100%;
@@ -42,6 +44,15 @@ const Scroll = forwardRef((props, ref) => { // 这个组件能够将其接受的
 
     const PullUpDisplayStyle = pullUpLoading ? { display: ''}: {display: 'none'}
     const PullDownDisplayStyle = pullDownLoading ? { display: ''}: {display: 'none'}
+
+    let pullUpDebounce = useMemo(() => {
+        return  debounce(pullUp, 300)
+    },[pullUp]) // 千万注意，这里不能省略依赖，
+    // 不然拿到的始终是第一次 pullUp 函数的引用，相应的闭包作用域变量都是第一次的，产生闭包陷阱。下同。
+
+    let pullDownDebounce = useMemo(() => {
+        return debounce(pullDown, 300)
+    },[pullDown])
 
     // 创建BS实例
     useEffect(() => {
@@ -84,26 +95,26 @@ const Scroll = forwardRef((props, ref) => { // 这个组件能够将其接受的
         bScroll.on('scrollEnd', (scroll) => {
             // 判断是否滑动到了底部
             if(bScroll.y <= bScroll.maxScrollY + 100) {
-                pullUp()
+                pullUpDebounce()
             }
         })
         return () => {
             bScroll.off('scrollEnd')
         }
-    }, [pullUp, bScroll])
+    }, [pullUp, bScroll, pullUpDebounce])
     // 下拉到底，下拉刷新
     useEffect(() => {
         if(!bScroll || !pullDown) return
         bScroll.on('touchEnd', (pos) => {
             // 判断是否滑动到了底部
             if(pos.y > 50) {
-                pullDown()
+                pullDownDebounce()
             }
         })
         return () => {
             bScroll.off('touchEnd')
         }
-    }, [pullDown, bScroll])
+    }, [pullDown, bScroll, pullDownDebounce])
 
     useImperativeHandle(ref, () => ({ // useImperativeHandle 可以让你在使用 ref 时自定义暴露给父组件的实例值, 这样就可以在父组件中调用scrollContainerRef.current.refresh
         refresh() {
