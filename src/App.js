@@ -6,6 +6,7 @@ import routes from './routes/index'
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store/index'
+import { Data } from './application/Singers/data'
 
 
 function App() {
@@ -15,7 +16,9 @@ function App() {
         <GlobalStyle></GlobalStyle>
         <IconStyle></IconStyle>
         {/* renderRoutes只能渲染一层路由 */}
-        { renderRoutes(routes) } 
+        <Data>
+          { renderRoutes(routes) } 
+        </Data>
       </HashRouter>
     </Provider>
   );

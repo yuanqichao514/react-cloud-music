@@ -1,18 +1,24 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
 import Horizon from '../../baseUI/horizon-item'
 import { alphaTypes, categoryTypes } from '../../api/config'
-import { NavContainer, ListContainer, List, ListItem } from './style'
+import { NavContainer, ListContainer, List, ListItem, EnterLoading } from './style'
 import { useState } from 'react'
 import Scroll from '../../baseUI/scroll'
 import { getHotSingerList, refreshMoreHotSingerList, getSingerList, refreshMoreSingerList, changeEnterLoading, changePageCount, changePullDownLoading, changePullUpLoading, changeSingerList } from './store/actionCreator'
 import { connect } from 'react-redux'
 import Loading from '../../baseUI/loading'
 import LazyLoad, { forceCheck } from 'react-lazyload';
+import {CHANGE_CATEGORY, CHANGE_ALPHA} from './data'
+import {CategoryDataContext} from './data'
 
 
 function Singers(props) {
-    let [category, setCategory] = useState('')
-    let [alpha, setAlpha] = useState('')
+    // let [category, setCategory] = useState('')
+    // let [alpha, setAlpha] = useState('')
+
+    const {data, dispatch} = useContext(CategoryDataContext)
+    // 拿到热门歌手和歌手列表
+    const {category, alpha} = data.toJS()
 
     const { singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount } = props;
 
@@ -26,12 +32,12 @@ function Singers(props) {
     }, []);
 
     let handleUpdateAlpha = (val) => {
-        setAlpha(val)
+        dispatch({type: CHANGE_ALPHA, data: val})
         updateDispatch(category, val) // 分类和列表联动
     }
 
     let handleUpdateCategory = (val) => {
-        setCategory(val)
+        dispatch({type: CHANGE_CATEGORY, data: val})
         updateDispatch(val, alpha)
     }
 
@@ -78,7 +84,7 @@ function Singers(props) {
                 <Scroll pullUp={handlePullUp} pullDown={handlePullDown} pullUpLoading={pullUpLoading} pullDownLoading={pullDownLoading} onScroll={forceCheck}>
                     { renderSingerList() }
                 </Scroll>
-                <Loading show={enterLoading}></Loading>
+                {enterLoading ? <EnterLoading><Loading></Loading></EnterLoading> : null}
             </ListContainer>
         </div>
     )
