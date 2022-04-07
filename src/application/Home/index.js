@@ -2,6 +2,7 @@ import React from 'react'
 import { renderRoutes } from 'react-router-config'
 import { Top, Tab, TabItem } from './style'
 import { NavLink } from 'react-router-dom'
+import Player from '../Player/index'
 
 function Home(props) {
     const {route} = props
@@ -20,6 +21,7 @@ function Home(props) {
             </Tab>
             {/* renderRoutes只能渲染一层路由，因此这里想要渲染二级路由还要再加一层 */}
             {renderRoutes(route.routes)}
+            <Player></Player>
         </div>
     )
 }

@@ -77,7 +77,7 @@ function Rank(props) {
                     { renderRankList(officialList) }
                     <h1 className='global' style={displayStyle}>全球榜</h1>
                     { renderRankList(globalList, true) }
-                    { loading ? <EnterLoading><Loading></Loading></EnterLoading> : null}
+                    <EnterLoading><Loading show={loading}></Loading></EnterLoading>
                 </div>
             </Scroll>
             {
