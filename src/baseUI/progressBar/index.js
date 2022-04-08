@@ -24,7 +24,7 @@ height: 30px;
     .progress-btn {
       position: relative;
       top: 7px;
-      left: 7px;
+      left: 16px;
       box-sizing: border-box;
       width: 16px;
       height: 16px;
