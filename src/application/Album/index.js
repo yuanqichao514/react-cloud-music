@@ -9,7 +9,7 @@ import { changeEnterLoading, getAlbumDetail } from './store/actionCreators'
 import { useEffect } from "react";
 import Loading from '../../baseUI/loading/index'
 import { useCallback } from "react";
-import SongsList from "../SongsList";
+import SongsList from "../SongList/index";
 
 
 function Album(props) {

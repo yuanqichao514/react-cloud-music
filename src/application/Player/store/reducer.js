@@ -2,7 +2,7 @@ import * as actionTypes from './constants'
 import { fromJS } from 'immutable'
 import { playMode } from '../../../api/config'
 
-const defaultState = {
+const defaultState = fromJS({
     fullScreen: false, // 播放器是否全屏
     playing: false, // 当前歌曲是否播放
     sequencePlayList: [], // 顺序播放列表(后续会有随机模式，列表乱序）
@@ -11,7 +11,7 @@ const defaultState = {
     currentIndex: -1, // 当前播放歌曲索引
     showPlayList: false, // 是否显示播放列表
     currentSong: {}, // 当前播放歌曲
-}
+})
 
 export default (state = defaultState, actions) => {
     switch (actions.type) {

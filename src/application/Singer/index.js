@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Container, ImgWrapper, CollectButton, SongListWrapper, BgLayer } from './style'
 import Header from "../../baseUI/header/index";
 import Scroll from "../../baseUI/scroll/index";
-import SongsList from "../SongsList";
+import SongsList from "../SongList/index";
 import { HEADER_HEIGHT} from "../../api/config";
 import { connect } from "react-redux";
 import { getSingerInfo, changeEnterLoading } from "./store/actionCreators";
