@@ -37,8 +37,12 @@ height: 30px;
 `
 
 function ProgressBar(props) {
+
+    const transform  = prefixStyle('transform')
+
+    const { percent } = props
   
-    // const { percentChange } = props
+    const { percentChange } = props
 
     const progressBar = useRef()
     const progressBtn = useRef()
@@ -47,10 +51,20 @@ function ProgressBar(props) {
 
     const progressBtnWidth = 16; 
 
+    useEffect(() => {
+      if(percent >= 0 && percent <= 1 && !touch.initiated) {
+        const barWidth = progressBar.current.clientWidth - progressBtnWidth
+        const offsetWidth = percent * barWidth
+        progress.current.style.width = `${offsetWidth}px`
+        progressBtn.current.style[transform] = `translate3d(${offsetWidth}px, 0, 0)`
+
+      }
+    }, [percent])
+
     const _changePercent = () => {
       const barWidth = progressBar.current.clientWidth - progressBtnWidth
       const curPercent = progress.current.clientWidth / barWidth
-      // percentChange(curPercent)
+      percentChange(curPercent)
     }
 
     const _offset = (offsetWidth) => {
@@ -82,11 +96,11 @@ function ProgressBar(props) {
       _changePercent(); // 进度条改变就需要传新的进度给付组件
     }
 
-      const progressClick = (e) => {
-        const rect = progressBar.current.getBoundingClientRect();
-        const offsetWidth = e.pageX - rect.left;
-        _offset(offsetWidth);
-        _changePercent(); // 进度条改变就需要传新的进度给付组件
+    const progressClick = (e) => {
+      const rect = progressBar.current.getBoundingClientRect();
+      const offsetWidth = e.pageX - rect.left;
+      _offset(offsetWidth);
+      _changePercent(); // 进度条改变就需要传新的进度给付组件
     }
 
     return (
