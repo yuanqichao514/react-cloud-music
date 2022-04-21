@@ -9,6 +9,7 @@ import { HEADER_HEIGHT} from "../../api/config";
 import { connect } from "react-redux";
 import { getSingerInfo, changeEnterLoading } from "./store/actionCreators";
 import Loading from "../../baseUI/loading";
+import MusicNote from '../../baseUI/music-note/index'
 
 function Singer(props) {
 
@@ -28,6 +29,12 @@ function Singer(props) {
     const layer = useRef();
     // 图片初始高度
     const initialHeight = useRef(0);
+    // 音符组件
+    const musicNoteRef = useRef();
+
+    const musicAnimation = (x, y) => {
+        musicNoteRef.current.startAnimation({ x, y })
+    }
 
     // 往上偏移的尺寸，露出圆角
     const OFFSET = 5;
@@ -115,11 +122,13 @@ function Singer(props) {
                         <SongsList
                         songs={songs}
                         showCollect={false}
+                        musicAnimation={musicAnimation}
                         >
                         </SongsList>
                     </Scroll>
                 </SongListWrapper>
                 <Loading show={loading}></Loading>
+                <MusicNote ref={musicNoteRef}></MusicNote>
             </Container>
         </CSSTransition>
     );

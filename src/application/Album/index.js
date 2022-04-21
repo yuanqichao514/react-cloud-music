@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import { Container, TopDesc, Menu, SongItem, SongList } from "./style";
 import { CSSTransition } from 'react-transition-group'
 import Header from "../../baseUI/header/index";
@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import Loading from '../../baseUI/loading/index'
 import { useCallback } from "react";
 import SongsList from "../SongList/index";
+import MusicNote from '../../baseUI/music-note/index'
 
 
 function Album(props) {
@@ -20,6 +21,12 @@ function Album(props) {
 
     const { getAlbumDataDispatch } = props
     const { currentAlbum: currentAlbumImmutable, enterLoading } = props
+
+    const musicNoteRef = useRef()
+
+    const musicAnimation = (x, y) => {
+        musicNoteRef.current.startAnimation({ x, y })
+    }
 
     useEffect(() => {
         getAlbumDataDispatch(id)
@@ -135,6 +142,7 @@ function Album(props) {
                                         collectCount={currentAlbum.subscribedCount}
                                         showCollect={false}
                                         showBackground={false}
+                                        musicAnimation={musicAnimation}
                                     >
                                     </SongsList>
                                 </div>
@@ -142,6 +150,7 @@ function Album(props) {
                    ) : null
                }
                <Loading show={enterLoading}></Loading>
+               <MusicNote ref={musicNoteRef}></MusicNote>
             </Container>
         </CSSTransition>
     );
