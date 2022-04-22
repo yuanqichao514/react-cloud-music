@@ -17,7 +17,7 @@ import { playMode } from "../../api/config";
 
 function Player(props) {
     const { fullScreen, playing, currentIndex, currentSong: immutableCurrentSong, playList: immutablePlayList, mode, sequencePlayList: immutableSequencePlayList } = props
-    const { toggleFullScreenDispatch, togglePlayingDispatch, changeCurrentIndexDispatch, changeCurrentDispatch, changePlayListDispatch, changeModeDispatch, } = props
+    const { toggleFullScreenDispatch, togglePlayingDispatch, changeCurrentIndexDispatch, changeCurrentDispatch, changePlayListDispatch, changeModeDispatch, togglePlayListDispatch } = props
 
     // 目前的播放时间
     const [currentTime, setCurrentTime] = useState(0)
@@ -162,6 +162,7 @@ function Player(props) {
                     toggleFullScreen={toggleFullScreenDispatch}
                     clickPlaying={clickPlaying}
                     percent={percent}
+                    togglePlayList={togglePlayListDispatch}
                 /> 
             }
            {
@@ -180,6 +181,7 @@ function Player(props) {
                     handleNext={handleNext}
                     mode={mode}
                     changeMode={changeMode}
+                    togglePlayList={togglePlayListDispatch}
                />
            }
             <audio ref={audioRef} onTimeUpdate={updateTime} onEnded={handleEnd}></audio>

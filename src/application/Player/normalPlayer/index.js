@@ -17,7 +17,7 @@ import { playMode } from "../../../api/config";
 
 function NormalPlayer(props) {
     const { song, fullScreen, percent, playing, duration, currentTime, mode } = props
-    const { toggleFullScreen, clickPlaying, onProgressChange, handlePrev, handleNext, changeMode } = props
+    const { toggleFullScreen, clickPlaying, onProgressChange, handlePrev, handleNext, changeMode, togglePlayList } = props
 
     const normalPlayerRef = useRef()
     const cdWrapperRef = useRef()
@@ -37,6 +37,11 @@ function NormalPlayer(props) {
             y,
             scale
         };
+    }
+
+    const handleTogglePlayList = () => {
+        togglePlayList(true)
+        e.stopPropagation()
     }
 
     const transform = prefixStyle('transform');
@@ -169,7 +174,7 @@ function NormalPlayer(props) {
                         <div className="icon i-right" onClick={handleNext}>
                             <i className="iconfont">&#xe718;</i>
                         </div>
-                        <div className="icon i-right">
+                        <div className="icon i-right" onClick={handleTogglePlayList}>
                             <i className="iconfont">&#xe640;</i>
                         </div>
                     </Operators>
