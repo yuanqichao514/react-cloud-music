@@ -36,6 +36,7 @@ function Player(props) {
 
     const audioRef = useRef()
     const toastRef = useRef()
+    const songReady = useRef(true)
 
     const clickPlaying = (e, state) => {
         e.stopPropagation()
@@ -123,14 +124,25 @@ function Player(props) {
             !playList.length || 
             currentIndex === -1 ||
             !playList[currentIndex] ||
-            playList[currentIndex].id === preSong.id
+            playList[currentIndex].id === preSong.id || 
+            !songReady.current
         ) {
             return
         }
         let current = playList[currentIndex]
         changeCurrentDispatch(current)
         setPreSong(current)
+        songReady.current = false // 标志位置为false，表示现在新的资源没有缓冲完成，不能切歌
         audioRef.current.src = getSongUrl(current.id)
+        setTimeout (() => {
+            // 注意，play 方法返回的是一个 promise 对象
+            audioRef.current.play().then(() => {
+                songReady.current = true;
+            }).catch(err => {
+                console.log(err);
+            })
+        });
+        togglePlayingDispatch (true);// 播放状态
         setCurrentTime(0)
         setDuration((current.dt / 1000) | 0)
     },[ playList, currentIndex])
