@@ -15,7 +15,7 @@ function Singer(props) {
 
     const [showStatus, setShowStatus] = useState(true)
 
-    const { artist: immutableArtist, songs: immutableSongs, loading } = props
+    const { artist: immutableArtist, songs: immutableSongs, loading, songsCount } = props
     const { getSingerDataDispatch } = props
 
     const artist = immutableArtist.toJS()
@@ -107,7 +107,7 @@ function Singer(props) {
             unmountOnExit
             onExited={props.history.goBack}
         >
-            <Container>
+            <Container play={songsCount}>
                 <Header ref={header} title={artist.name} handleClick={setShowStatusFalse}></Header>
                 <ImgWrapper bgUrl={artist.picUrl} ref={imageWrapper}>
                     <div className="filter"></div>
@@ -137,7 +137,8 @@ function Singer(props) {
 const mapStateProps = (state) => ({
   artist: state.getIn(['singerInfo', 'artist']),
   songs: state.getIn(['singerInfo', 'songsOfArtist']),
-  loading: state.getIn(['singerInfo', 'loading'])
+  loading: state.getIn(['singerInfo', 'loading']),
+  songsCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchProps = (dispatch) => ({

@@ -21,7 +21,7 @@ function Singers(props) {
     // 拿到热门歌手和歌手列表
     const {category, alpha} = data.toJS()
 
-    const { singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount } = props;
+    const { singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount, songsCount } = props;
 
     const { getHotSingerDispatch, updateDispatch, pullDownRefreshDispatch, pullUpRefreshDispatch } = props;
 
@@ -85,7 +85,7 @@ function Singers(props) {
                 <Horizon list={categoryTypes} title={"分类(默认热门):"} handleClick={handleUpdateCategory} oldVal={category}></Horizon>
                 <Horizon list={alphaTypes} title={"首字母:"} handleClick={handleUpdateAlpha} oldVal={alpha}></Horizon>
             </NavContainer>
-            <ListContainer>
+            <ListContainer play={songsCount}>
                 <Scroll pullUp={handlePullUp} pullDown={handlePullDown} pullUpLoading={pullUpLoading} pullDownLoading={pullDownLoading} onScroll={forceCheck}>
                     { renderSingerList() }
                 </Scroll>
@@ -101,7 +101,8 @@ const mapStateToProps = (state) => ({
     enterLoading: state.getIn(['singers', 'enterLoading']),
     pullUpLoading: state.getIn(['singers', 'pullUpLoading']),
     pullDownLoading: state.getIn(['singers', 'pullDownLoading']),
-    pageCount: state.getIn(['singers', 'pageCount'])
+    pageCount: state.getIn(['singers', 'pageCount']),
+    songsCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchProps = (dispatch) => {

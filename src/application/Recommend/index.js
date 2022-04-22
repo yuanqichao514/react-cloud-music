@@ -29,7 +29,7 @@ function Recommend(props) {
     // })
 
     // 实际请求
-    const { bannerList, recommendList, enterLoading } = props
+    const { bannerList, recommendList, enterLoading, songsCount } = props
 
     const { getBannerDataDispatch, getRecommendListDataDispatch } = props
 
@@ -51,7 +51,7 @@ function Recommend(props) {
 
     return (
         // 这里Content是为了让better-scroll能够再固定高度的外部容器内实现滚动效果，这是基于bs的实现原理
-        <Content>
+        <Content play={songsCount}>
             <Scroll className="list" onScroll={forceCheck}>
                 <div>
                     <Slider bannerList={bannerListJS}></Slider>
@@ -70,7 +70,8 @@ const mapStateToProps = (state) => ({
     // 不然每次diff比对props的时候都是不一样的引用，还是导致不必要的渲染，属于滥用immutable
     bannerList: state.getIn(['recommend', 'bannerList']),
     recommendList: state.getIn(['recommend', 'recommendList']),
-    enterLoading: state.getIn(['recommend', 'enterLoading'])
+    enterLoading: state.getIn(['recommend', 'enterLoading']),
+    songsCount: state.getIn(['player', 'playList']).size
 })
 
 // 映射dispatch到props上
