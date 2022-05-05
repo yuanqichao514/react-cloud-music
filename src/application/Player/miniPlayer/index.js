@@ -9,7 +9,7 @@ function MiniPlayer(props) {
     const { toggleFullScreen, clickPlaying, togglePlayList } = props
     const miniPlyer = useRef()
 
-    const handleTogglePlayList = () => {
+    const handleTogglePlayList = (e) => {
         togglePlayList(true)
         e.stopPropagation()
     }
@@ -36,7 +36,7 @@ function MiniPlayer(props) {
                     <h2 className="name">{song.name}</h2>
                     <p className="desc">{getName(song.ar)}</p>
                 </div>
-                <div className="control">
+                <div className="control" onClick={handleTogglePlayList}>
                     <ProgressCircle radius={32} percent={percent}>
                         {
                             playing ? 

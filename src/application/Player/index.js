@@ -14,6 +14,7 @@ import NormalPlayer from "./normalPlayer";
 import Toast from '../../baseUI/toast/index'
 import { getSongUrl, isEmptyObject, findIndex, shuffle } from "../../api/utils";
 import { playMode } from "../../api/config";
+import PlayList from '../PlayList/index';
 
 function Player(props) {
     const { fullScreen, playing, currentIndex, currentSong: immutableCurrentSong, playList: immutablePlayList, mode, sequencePlayList: immutableSequencePlayList } = props
@@ -162,6 +163,7 @@ function Player(props) {
                     toggleFullScreen={toggleFullScreenDispatch}
                     clickPlaying={clickPlaying}
                     percent={percent}
+                    changePlayListDispatch={changePlayListDispatch}
                     togglePlayList={togglePlayListDispatch}
                 /> 
             }
@@ -181,10 +183,12 @@ function Player(props) {
                     handleNext={handleNext}
                     mode={mode}
                     changeMode={changeMode}
+                    changePlayListDispatch={changePlayListDispatch}
                     togglePlayList={togglePlayListDispatch}
                />
            }
             <audio ref={audioRef} onTimeUpdate={updateTime} onEnded={handleEnd}></audio>
+            <PlayList></PlayList>
             <Toast text={modeText} ref={toastRef}></Toast>  
         </div>
     )

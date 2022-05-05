@@ -39,7 +39,7 @@ function NormalPlayer(props) {
         };
     }
 
-    const handleTogglePlayList = () => {
+    const handleTogglePlayList = (e) => {
         togglePlayList(true)
         e.stopPropagation()
     }
