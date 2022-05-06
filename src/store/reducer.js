@@ -5,6 +5,7 @@ import { reducer as rankReducer } from '../application/Rank/store/index'
 import { reducer as albumReducer } from '../application/Album/store/index'
 import { reducer as singerInfoReducer } from '../application/Singer/store/index'
 import { reducer as playerReducer } from '../application/Player/store/index'
+import { reducer as searchReducer } from '../application/Search/store/index'
 
 export default combineReducers({
     recommend: recommendReducer, // 将推荐列表的局部store注册到全局的store
@@ -13,4 +14,5 @@ export default combineReducers({
     album: albumReducer, // 将专辑列表的局部store注册到全局的store
     singerInfo: singerInfoReducer, // 将歌手详情的局部store注册到全局的store
     player: playerReducer, // 将播放器的局部store注册到全局的store
+    search: searchReducer, // 将搜索框的局部store注册到全局的store
 })

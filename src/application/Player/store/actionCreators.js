@@ -1,5 +1,7 @@
 import * as actionTypes from './constants'
 import { fromJS } from 'immutable'
+import { getSongDetailRequest } from '../../../api/request'
+import { INSERT_SONG } from './constants'
 
 export const changeCurrentSong = (data) => ({
     type: actionTypes.SET_CURRENT_SONG,
@@ -45,3 +47,17 @@ export const deleteSong = (data) => ({
     type: actionTypes.DELETE_SONG,
     data
 })
+
+export const insetSong = (data) => ({
+    type: INSERT_SONG,
+    data
+})
+
+export const getSongDetail = (id) => {
+    return dispatch => {
+        getSongDetailRequest(id).then(data => {
+            let song = data.songs[0]
+            dispatch(insetSong(song))
+        })
+    }
+}
